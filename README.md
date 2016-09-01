@@ -1,10 +1,25 @@
-Learning Git
+# Learning Git
 
-http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000
+## Introduction
 
-Install Git
-    check command line: git
-    to install git: sudo apt-get install git
+This repo contains the notes I made while learning the Git command-line tool from [Liao Xuefeng's blog](http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000). Git is an advanced distributed version control tool that enables release, cooperation and evolution. Mastering Git really helps boost the productivity and maintain the software.
+
+A Git command cheatsheet by Tower is also provided here for your reference.
+
+## Commands
+
+### Install Git
+To use Git, first open your terminal and type 
+```bash
+git
+```
+to check whether you've installed Git. If not, 
+```bash
+sudo apt-get install git
+```
+to install under Ubuntu or visit [this](https://git-scm.com/) for a Windows version.
+
+
 
 Configure Git
     git config --global user.name "Your Name"
