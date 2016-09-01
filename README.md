@@ -10,21 +10,24 @@ A Git command cheatsheet by Tower is also provided here for your reference.
 
 ### Install Git
 To use Git, first open your terminal and type 
-```bash
+```
 git
 ```
 to check whether you've installed Git. If not, 
-```bash
+```
 sudo apt-get install git
 ```
 to install under Ubuntu or visit [this](https://git-scm.com/) for a Windows version.
 
+### Configure Git
 
+The Git global configuration file is stored in main/.gitconfig while the local repo configuration file resides in <repo>/.git/config. You could either change your configuration in a text editor or use
+```
+git config --global user.name "<YourName>"
+git config --global user.email "<email@example.com>"
+```
 
-Configure Git
-    git config --global user.name "Your Name"
-    git config --global user.email "email@example.com"
-
+### Initialization
 Init Git Repo
     git init
     ( note for encoding issues, choose UTF-8 )
@@ -163,10 +166,6 @@ GitIgnore
     if git reminds you of conflict, git add -f <filename>
     or git check-ignore -v <filaname>
     
-Config
-    git global config in the main/.gitconfig
-    local repo config in repo/.git/config
-    use cat
     
     
     
