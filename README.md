@@ -150,70 +150,109 @@ Other commands related to branching are
 * ```git branch -d <branchname>``` deletes the branch
 * ```git merge --no-ff -m "<note>" <branchname>``` does not delete the branch when merging
 
-Conflict resolving
-    When conflicts occur when you merge two branches, mannually resolve them
-    check by git status
-    git log --graph --pretty=oneline --abbrev-commit
-    shows the branch merging graph
-    
-Bug
-    use git stash to store the state of the git especially when you need to add a new branch while you still have work not pushed
-    then navigate to the branch where bugs occur and git a new branch to fix it
-    after that navigate to the previous branch and recover the stash
-    git stash list
-    git stash apply and git stash drop
-    or 
-    git stash pop to combine the two
-    if you have multiple stashes, git stath list and git stash apply stash@{...}
-    
-Feature
-    add a new branch for each new feature
-    use git branch -D <branchname> to delete if you have not git merge
-    
-Cooperation
-    git remote shows info about the remote repo
-    git remote -v gives details
-    to push branch git push origin <branchname>
-    Again origin is the name of the remote repo
-    git clone by default only provides access to origin
-    git checkout -b dev origin/dev opens the new branch
-    when there is conflict, first git pull then 
-    git checkout -b <branchname> origin/<branchname>
-    git pull --set-upstrem <branchname> origin/<branchname>
-    to establish connection of the local and remote repos
-    resolve the conflict locally
-    then git push
-    
-Tagging: alias of a commit id
-    navigate to the branch
-    git tag lists all the branch
-    git tag <tagname> gives a new tag to the latest commit
-    git tag <tagname> <commit id> gives a tag to a specified commit
-    git show <tagname> returns details of a commit with a corresponding tag name
-    git tag -a <tagname> -m "notes" attaches the notes
-    if replace "-a" with "-s", git uses a encrypted tagging method
-    git tag -d <tagname> deletes the local tag
-    git push origin <tagname> pushes the commit with the tag name
-    or git push origin --tags
-    to delete remote tag
-    git tag -d <tagname> locally
-    then 
-    git push origin :refs/tags/<tagname>
-    
-Contribute
-    TO contribute to an existing project, first fork the repo, then clone, add soemthing and push
-    pull request to contribute
-    
-GitIgnore
-    .gitignore tracks the file extensions to not to add to the repo
-    should include but not be limited to system-generated cache, intermediate and executable files or ones containing sensitive info
-    if git reminds you of conflict, git add -f <filename>
-    or git check-ignore -v <filaname>
-    
-    
-    
-    
-    
-    
-    
-    
+When conflicts occur when you merge two branches, mannually resolve them by checking the repo's status and the branch merge graph by
+```
+git log --graph --pretty=oneline --abbrev-commit
+```
+
+When adding a new feature to your program, create a new branch for it so that code in the Master branch is not tourched. If the new feature is unfortunately discarded by the program manager, use
+```
+git branch -D <branchname>
+```
+to delete the unmerged branch.
+
+### Bug
+
+Stash is used to store the state of the git espcially when you need to add a new branch with work not pushed in the mean time. This makes bug fixes even easier.
+
+To fix the bug, first navigate to the branch where bugs occur and create a new branch and then navigate to the previous branch to recover the Stash using
+```
+git stash list
+git stash apply
+git stash drop
+```
+or use 
+```
+git stash pop
+```
+to combine the two. If there are multiple stashes, 
+```
+git stath list
+git stash apply stash@{...}
+```
+
+### Tagging
+
+Tagging is an alias of a commit ID. To give a tagging, navigate to the branch 
+```
+git tag lists
+```
+to list all the branch, 
+```
+git tag <tagname>
+```
+gives a new tag to the latest commit;
+```
+git tag <tagname> <commitID>
+```
+gives a tag to a specified commit;
+```
+git show <tagname>
+```
+returns details of a commit with a corresponding tag name;
+```
+git tag -a/s <tagname> -m "<notes>"
+```
+attaches the notes;
+```
+git tag -d <tagname>
+```
+deletes the local tag;
+```
+git push origin <tagname>
+```
+or
+```
+git push origin --tags
+```
+pushes the commit with the tag name. TO delete a remote repo, use
+```
+git tag -d <tagname>
+```
+to delete locally and then
+```
+git push origin :refs/tags/<tagname>
+```
+
+### Cooperation
+
+Before cooperation, ```git remote``` shows info about the remote repo and ```git remote -v``` gives details of the repo. When you want to push an entire branch, use
+```
+git push origin <branchname>
+```
+where again origin is the name of the remote repo.
+
+Like ```git checkout -b dev origin/dev``` just opens the new branch, when there are conflicts, first git pull,  
+```
+git checkout -b <branchname> origin/<branchname>
+```
+then
+```
+git pull --set-upstrem <branchname> origin/<branchname>
+```
+to establish connection of the local and remote repos. After conflicts are resolved, git push.
+  
+To contribute to an existing project, first fork the repo, then clone, add soemthing, push to your own repo and send pull request to contribute.
+
+### gitignore
+
+.gitignore tracks the file not to add to the repo. This file should include but not limited to system-generated cache, intermediate and executable files or ones containing sensitive info.
+
+When Git reminds you of conflict,
+```
+git add -f <filename>
+```
+or
+```
+git check-ignore -v <filaname>
+```
