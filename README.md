@@ -9,6 +9,7 @@ A Git command cheatsheet by Tower is also provided here for your reference.
 ## Commands
 
 ### Install Git
+
 To use Git, first open your terminal and type 
 ```
 git
@@ -37,76 +38,117 @@ just note to use UTF-8 encoding without BOM under Windows. Or you could clone a 
 ```
 git clone <protocol>
 ```
-where the protocol could be either https or git. Currently, git is the fastest protocol supported.
-    
-Adding
-    git add <file>
-    git add --all
-    ...
-    git commit -m "<note>"
-    
-Checking
-    git status
-    git diff <file>
+where the protocol could be either https or git. Currently, git is the fastest protocol supported but https is safer.
 
-After modification
-    git add + git commit
-    
-Log
-    git log
-    or git log --pretty=oneline
-    or git reflog
-    
-Reset
-    git reset --hard HEAD^   ( the last version )
-                     HEAD^^  ( the second to last )
-                     HEAD~10 ( the 10th to last )
-                     <commit id>
-                     
-Stage
-    Stage is a temporay space for changes into files
-    "git add" stores the changes instead of files into the Stage
-    "git commit" pushes the changes in Stage to the branch
-    git diff HEAD -- <filename> tracks the difference between the working directory and the branch
-    
-Unstage
-    Case 1. git checkout -- <filename> discards changs in the working directory to a state of the nearest "git add" or "git commit"
-    Case 2. if you git add, use git reset HEAD <filename> to unstage.
-    
-Deletion
-    after rm <filename>
-    git rm <filename>
-    git commit -m "note" 
-    or after rm <filename>
-    git checkout -- <filename>
-    
-Distributed Git
-    cd to .ssh
-    ssh-keygen -t rsa -C "youremail@example.com"
-    Key pressing Enter
-    Log into the GitHub account setting web and copy the contents of .ssh/id_rsa.pub to ssh key
-    
-Remote Repo
-    For a new repo in GitHub
-    git remote add origin https://github.com/WellyZhang/LearningGit.git
-    origin is the default name of the remote repo
-    then git push -u origin master
-    the -u parameter synchronize the local repo and the remote repo
-    use it the first time for a new git remote repo
-    since now you can git push origin master after git commit
+### Modification
 
-Branching
-    Main branch is called Master
-    HEAD points to the current version of Master
-    but HEAD is just a pointer, it can point to any other branch
-    git branch <branchname> creates a new branch
-    git checkout <branchname> switch to another branch
-    git checkout -b <branchname> combines the two commands
-    now changes are tracked in the new branch and Master won't be affected
-    git branch checks the current branch and lists all
-    git merge <branchname> merges the branch to the current branch
-    git branch -d <branchname> deletes the branch
-    git merge --no-ff -m "note" <branchname> does not delete the branch when merging
+After changing files, including adding, modifying and removing, 
+```
+git add <file1>
+git add <file2>
+...
+git commit -m "<note>"
+```
+to commit the changes. If many files are changed, could use
+```
+git add --all
+```
+Remember, every time files are changed, git add and git commit.
+
+To remove a file, first delete it in the repo then
+```
+git rm <filename>
+```
+and commit the change. Or directly type
+```
+git checkout -- <filename>
+```
+
+###  Status and Logging
+
+To check the staus of the repo, type
+```
+git status
+```
+To see how a file is changed
+```
+git diff <file>
+```
+The logging of the repo is shown by
+```
+git log [--pretty=oneline]
+git reflog
+```
+
+### Reset
+
+To return to previous versions
+```
+git reset --hard HEAD^   (the last version)
+                 HEAD^^  (the second to last)
+                 HEAD~10 (the 10th to last)
+                 <commitId>
+```
+
+### Stage
+
+Stage is a temporay space for changes into files. git add stores the changes instead of files into the Stage; git commit pushes the changes in Stage to the current branch.
+
+To track the diffrence between the working directory and the branch
+```
+git diff HEAD -- <filename>
+```    
+
+Git also allows you to unstage. To discard changes in the working directory and return to a stage of the nearest git add or git commit
+```
+git checkout -- <filename>
+```
+If you have already git add
+```
+git reset HEAD <filename>
+```
+to unstage.
+
+### Distributed Git
+
+To use GitHub for distributed Git, first obtain your RSA key by following the steps
+
+1. cd to .ssh
+2. call ```ssh-keygen -t rsa -C "youremail@example.com"```
+3. Key pressing Enter
+4. Log into the GitHub account setting web and copy the contents of .ssh/id_rsa.pub to ssh key
+    
+To add a remote repo, 
+```
+git remote add origin https://github.com/WellyZhang/LearningGit.git
+```
+Note that origin is the default name of the remote repo.
+Then 
+```
+git push -u origin master
+```
+where the -u parameter synchronizes the local repo and the remote repo and is only needed the first time you push the local to the remote repo; ever since now you can git push origin master after git commit.
+
+### Branching
+
+The main branch is called Master and there is actually a HEAD pointer that points to the current version of Master. Since HEAD is just a pointer, it could point to any other branch.
+
+To create a new brach and navigate to it
+```
+git branch <branchname>h
+git checkout <branchname>
+```
+or type
+```
+git checkout -b <branchname>
+```
+to combine the two. Now changes are tracked in the new branch and Master won't be affected.
+
+Other commands related to branching are
+* ```git branch``` checks the current branch and lists all
+* ```git merge <branchname>``` merges the branch to the current branch
+* ```git branch -d <branchname>``` deletes the branch
+* ```git merge --no-ff -m "<note>" <branchname>``` does not delete the branch when merging
 
 Conflict resolving
     When conflicts occur when you merge two branches, mannually resolve them
