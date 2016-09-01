@@ -28,10 +28,16 @@ git config --global user.email "<email@example.com>"
 ```
 
 ### Initialization
-Init Git Repo
-    git init
-    ( note for encoding issues, choose UTF-8 )
-    ( UTF-8 without BOM )
+
+To initialize a Git repo, you could either initialize it locally by
+```
+git init
+```
+just note to use UTF-8 encoding without BOM under Windows. Or you could clone a remote repo by
+```
+git clone <protocol>
+```
+where the protocol could be either https or git. Currently, git is the fastest protocol supported.
     
 Adding
     git add <file>
@@ -88,10 +94,6 @@ Remote Repo
     the -u parameter synchronize the local repo and the remote repo
     use it the first time for a new git remote repo
     since now you can git push origin master after git commit
-
-Git Clone
-    git clone <http/git>
-    git is the fastest protocol supported
 
 Branching
     Main branch is called Master
