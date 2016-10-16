@@ -135,7 +135,7 @@ The main branch is called Master and there is actually a HEAD pointer that point
 
 To create a new brach and navigate to it
 ```
-git branch <branchname>h
+git branch <branchname>
 git checkout <branchname>
 ```
 or type
