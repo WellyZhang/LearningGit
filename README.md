@@ -70,6 +70,8 @@ Remember, every time files are changed, git add and git commit.
 
 ```git add``` command moves changes from the working directory to the Git staging area. The staging area is where you prepare a snapshot of a set of changes before committing them to the official history. ```git commit``` takes the staged snapshot and commits it to the project history. Combined with git add, this process defines the basic workflow for all Git users.
 
+The --amend option in commit combines the staged changes with the previous commit and replace the previous commit with the resulting snapshot. Running this when there is nothing staged lets you edit the previous commit's message without altering its snapshot.
+
 Note that Git repo consists of the working directory that holds all your files, the stage that caches your modifications and HEAD that tracks your commit history.  
 
 To remove a file, first delete it in the repo then
@@ -88,9 +90,11 @@ The git checkout command serves three distinct functions: checking out files, ch
 
 Checking out a commit makes the entire working directory match that commit. This can be used to view an old state of your project without altering your current state in any way. 
 ```
-git checkout <commit>/<tag>/HEAD <file>
+git checkout <commit>/<tag>/HEAD <file> (HEAD is the current commit)
 ```
 will turn <file> into a copy from <commit>/<tag>/HEAD and add it to the staging area. If you leave <file>, the working directory is matched to the specific commit/tag/HEAD. 
+
+Note that checking out old commits is a read-only operation -- nothing you do in here will be saved in your repository. During the normal course of development, the HEAD usually points to master or some other local branch, but when you check out a previous commit, HEAD no longer points to a branch -- it points directly to a commit. This is called a "detached HEAD" state. But checking out an old file does affect the current state of your repository (staged). You can re-commit the old version in a new snapshot as you would any other file.
 
 ###  Status and Logging
 
@@ -105,19 +109,32 @@ To see how a file is changed
 git diff <file>
 ```
 
-The git log command displays committed snapshots. While git status lets you inspect the working directory and the staging area, git log only operates on the committed history. The -p option gives a detailed view.
+The git log command displays committed snapshots. While git status lets you inspect the working directory and the staging area, git log only operates on the committed history. The -p option gives a detailed view. And git reflog keeps track of the updates of tips of branches.
 
-### Reset
+### Revert, Reset and Clean
 
-To return to previous versions
 ```
-git reset --hard HEAD^   (the last version)
-                 HEAD^^  (the second to last)
-                 HEAD~10 (the 10th to last)
-                 <commitId>
+git revert <commit>
 ```
+generates a new commit that undoes all of the changes introduced in <commit>, then apply it to the current branch. It does not remove the commit from the project history.
+
+Reset "revert"s back to the previous state of a project by removing all subsequent commits. When you undo with git reset(and the commits are no longer referenced by any ref or the reflog), there is no way to retrieve the original copy -- it is a permanent undo.
+
+```
+git reset [--hard] <file>/<commit> e.g. HEAD^   (the last version)
+                                        HEAD^^  (the second to last)
+                                        HEAD~10 (the 10th to last)
+                 
+```
+Without --hard, this command resets the staging area to match the most recent commit, but leaves the working directory unchanged; with it, the working directory is overwritten.
 
 Note that ~ is useful for making relative references to the parent of a commit. For example, 3157e~1 refers to the commit before 3157e, and HEAD~3 is the great-grandparent of the current commit.
+
+As soon as you add new commits after the reset, Git will think that your local history has diverged from origin/master and merge is needed. 
+
+For public repos, never use reset.
+
+The git clean command removes untracked files from your working directory. This is not undoable. This command is often executed in conjunction with ```git reset --hard```. Remember that resetting only affects tracked files, so a separate command is required for cleaning up untracked ones. Combined (with -f option), these two commands let you return the working directory to the exact state of a particular commit.
 
 ### Stage
 
@@ -287,6 +304,14 @@ git pull --set-upstrem <branchname> origin/<branchname>
 to establish connection of the local and remote repos. After conflicts are resolved, git push.
   
 To contribute to an existing project, first fork the repo, then clone, add something, push to your own repo and send pull request to contribute.
+
+Rebasing is commonly used in open-sourced projects. It is the process of moving a branch to a new base commit. 
+```
+git rebase <base> (from another branch and then merge this branch)
+```
+rebases the current branch onto <base>, which can be any kind of commit reference. It results in a fast-forward merge and a perfectly linear history and is a common way to integrate upstream changes into your local repository. It's like saying "I want to base my changes on what everybody has already done."
+
+A -i option in rebase begins an interactive rebasing session. This gives you the opportunity to alter individual commits in the process.
 
 ### gitignore
 
