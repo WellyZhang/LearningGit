@@ -2,11 +2,11 @@
 
 ## Introduction
 
-This repo contains the notes I made while learning the Git command-line tool from [Liao Xuefeng's blog](http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000). Git is an advanced distributed version control tool that enables release, cooperation and evolution. Mastering Git really helps boost the productivity and maintain the software.
+This repo contains the notes I made while learning the Git command-line tool from [Liao Xuefeng's blog](http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000) and [Git Tutorial](https://www.atlassian.com/git/tutorials/). Git is an advanced distributed version control tool that enables release, cooperation and evolution. Mastering Git really helps boost the productivity and maintain the software.
 
 A Git command cheatsheet by Tower is also provided here for your reference.
 
-## Commands
+## Basics
 
 ### Install Git
 
@@ -54,6 +54,10 @@ to commit the changes. If many files are changed, could use
 git add --all
 ```
 Remember, every time files are changed, git add and git commit.
+
+```git add``` command moves changes from the working directory to the Git staging area. The staging area is where you prepare a snapshot of a set of changes before committing them to the official history. ```git commit``` takes the staged snapshot and commits it to the project history. Combined with git add, this process defines the basic workflow for all Git users.
+
+Note that Git repo consists of the working directory that holds all your files, the stage that caches your modifications and HEAD that tracks your commit history.  
 
 To remove a file, first delete it in the repo then
 ```
@@ -125,13 +129,14 @@ git remote add origin https://github.com/WellyZhang/LearningGit.git
 Note that origin is the default name of the remote repo.
 Then 
 ```
-git push -u origin master
+git push origin master
 ```
-where the -u parameter synchronizes the local repo and the remote repo and is only needed the first time you push the local to the remote repo; ever since now you can git push origin master after git commit.
 
 ### Branching
 
-The main branch is called Master and there is actually a HEAD pointer that points to the current version of Master. Since HEAD is just a pointer, it could point to any other branch.
+The main branch is called master and is the default working space.There is actually a HEAD pointer that points to the current version of master. Since HEAD is just a pointer, it could point to any other branch. You can think of a branch as a brand-new working directory, staging area, and project history, or an independent line of development for the repo.
+
+When you create a branch, all Git needs to do is create a new pointer.  
 
 To create a new brach and navigate to it
 ```
@@ -142,13 +147,15 @@ or type
 ```
 git checkout -b <branchname>
 ```
-to combine the two. Now changes are tracked in the new branch and Master won't be affected.
+to combine the two. Now changes are tracked in the new branch and master won't be affected.
 
 Other commands related to branching are
 * ```git branch``` checks the current branch and lists all
 * ```git merge <branchname>``` merges the branch to the current branch
 * ```git branch -d <branchname>``` deletes the branch
 * ```git merge --no-ff -m "<note>" <branchname>``` does not delete the branch when merging
+
+Note the easist merging mode is fast-forward: it simply moves the current branch tip to the target branch tip. 
 
 When conflicts occur when you merge two branches, mannually resolve them by checking the repo's status and the branch merge graph by
 ```
@@ -226,7 +233,7 @@ git push origin :refs/tags/<tagname>
 
 ### Cooperation
 
-Before cooperation, ```git remote``` shows info about the remote repo and ```git remote -v``` gives details of the repo. When you want to push an entire branch, use
+Before cooperation, ```git remote``` shows info about the remote repo and ```git remote -v``` gives details of the repo. When you want to push to a branch, use
 ```
 git push origin <branchname>
 ```
@@ -242,7 +249,7 @@ git pull --set-upstrem <branchname> origin/<branchname>
 ```
 to establish connection of the local and remote repos. After conflicts are resolved, git push.
   
-To contribute to an existing project, first fork the repo, then clone, add soemthing, push to your own repo and send pull request to contribute.
+To contribute to an existing project, first fork the repo, then clone, add something, push to your own repo and send pull request to contribute.
 
 ### gitignore
 
