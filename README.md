@@ -366,3 +366,20 @@ But if two branches both change the same file, Git won't be able to figure out w
 When the remote repo is modified before you push, it's suggested you push with the --rebase option. But if the rebase process generates some conflicts, Git will pause at this specific commit and wait for you to resolve it manually. Once the conflict is removed, you can git add and git rebase --continue.
 
 ## Advanced Tips
+
+### Reset, Checkout and Revert
+
+On the commit-level, resetting is a way to move the tip of a branch to a different commit. This can be used to remove commits from the current branch. By using reset, you actually throw away commits. git reset has three options: --soft only alters the project history; --mixed leaves only the working directory unchanged and is the defaulyt; --hard updates all the three components in a git repo.
+
+You can also check out arbitrary commits by passing in the commit reference instead of a branch. This does the exact same thing as checking out a branch: it moves the HEAD reference to the specified commit. But it results in a detached HEAD state.
+
+Reverting undoes a commit by creating a new commit. This is a safe way to undo changes, as it has no chance of re-writing the commit history. Contrast this with git reset, which does alter the existing commit history. For this reason, git revert should be used to undo changes on a public branch, and git reset should be reserved for undoing changes on a private branch.
+
+You can also think of git revert as a tool for undoing committed changes, while git reset HEAD is for undoing uncommitted changes.
+
+The git reset and git checkout commands also accept an optional file path as a parameter. This dramatically alters their behavior. 
+
+When invoked with a file path, git reset updates the staged snapshot to match the version from the specified commit. The --soft, --mixed, and --hard flags do not have any effect on the file-level version of git reset, as the staged snapshot is always updated, and the working directory is never updated. 
+
+Checking out a file is similar to using git reset with a file path, except it updates the working directory instead of the stage. Unlike the commit-level version of this command, this does not move the HEAD reference, which means that you won’t switch branches. If you stage and commit the checked-out file, this has the effect of “reverting” to the old version of that file. Note that this removes all of the subsequent changes to the file, whereas the git revert command undoes only the changes introduced by the specified commit.
+
