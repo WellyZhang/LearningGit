@@ -180,7 +180,7 @@ The main branch is called master and is the default working space.There is actua
 
 When you create a branch, all Git needs to do is create a new pointer.  
 
-To create a new brach and navigate to it
+To create a new brach (based on the current one) and navigate to it
 ```
 git branch <branchname>
 git checkout <branchname>
@@ -191,10 +191,15 @@ git checkout -b <branchname>
 ```
 to combine the two. Now changes are tracked in the new branch and master won't be affected.
 
+Note that to create a new branch based on another branch,
+```
+git branch <new-branch> <existing-branch>
+```
+
 Other commands related to branching are
 * ```git branch``` checks the current branch and lists all
 * ```git merge <branchname>``` merges the branch to the current branch
-* ```git branch -d <branchname>``` deletes the branch
+* ```git branch -d/D <branchname>``` deletes the branch (-D for force delete)
 * ```git merge --no-ff -m "<note>" <branchname>``` does not delete the branch when merging
 
 Note the easist merging mode is fast-forward: it simply moves the current branch tip to the target branch tip. 
@@ -204,11 +209,7 @@ When conflicts occur when you merge two branches, mannually resolve them by chec
 git log --graph --pretty=oneline --abbrev-commit
 ```
 
-When adding a new feature to your program, create a new branch for it so that code in the Master branch is not tourched. If the new feature is unfortunately discarded by the program manager, use
-```
-git branch -D <branchname>
-```
-to delete the unmerged branch.
+When adding a new feature to your program, create a new branch for it so that code in the Master branch is not tourched.
 
 ### Stash
 
@@ -250,27 +251,27 @@ git tag lists
 ```
 to list all the branch, 
 ```
-git tag <tagname>
+git tag <tag>
 ```
 gives a new tag to the latest commit;
 ```
-git tag <tagname> <commitID>
+git tag <tag> <commit>
 ```
 gives a tag to a specified commit;
 ```
-git show <tagname>
+git show <tag>
 ```
 returns details of a commit with a corresponding tag name;
 ```
-git tag -a/s <tagname> -m "<notes>"
+git tag -a/s <tag> -m "<notes>"
 ```
 attaches the notes;
 ```
-git tag -d <tagname>
+git tag -d <tag>
 ```
 deletes the local tag;
 ```
-git push origin <tagname>
+git push origin <tag>
 ```
 or
 ```
@@ -278,11 +279,11 @@ git push origin --tags
 ```
 pushes the commit with the tag name. TO delete a remote repo, use
 ```
-git tag -d <tagname>
+git tag -d <tag>
 ```
 to delete locally and then
 ```
-git push origin :refs/tags/<tagname>
+git push origin :refs/tags/<tag>
 ```
 
 ### Cooperation
@@ -330,3 +331,38 @@ The following command shows why a file is ignored or not:
 ```
 git check-ignore -v <filaname>
 ```
+
+## Collaboration
+
+### Sync
+
+git remote lists the remote connections you have to other repositories. A -v option will include URLs of each connection. The remote command also has add, rm and rename options. When you clone a repository with git clone, it automatically creates a remote connection called origin pointing back to the cloned repository. 
+
+Fetching is what you do when you want to see what everybody else has been working on. Since fetched content is represented as a remote branch, it has absolutely no effect on your local development work. The command is formatted as:
+```
+git fetch <remote> [<branch>]
+```
+
+Here remote branches are like local branches, except they represent commits from somebody else’s repository. You can check out a remote branch just like a local one, but this puts you in a detached HEAD state (just like checking out an old commit). You can think of them as read-only branches. To show remote branches (named after <remote>/<branch>), add -r in the git branch command. If changes in the remote branches are approved, you can merge it with your master branch. This synchronizes the local repo.
+
+git pull combines the fetch and merge workflow. git pull <remote> is equivalent to git fetch <remote> and git merge origin/<current-branch>. Its --rebase option moves the local changes onto the top of latest update.
+
+git push transfers commits from your local repository to a remote repo, formatted as 
+```
+git push <remote> <branch>/--all [--force]
+```
+with the --force option results in push even when non-fast-forward merge.
+
+### Resolvin Conflicts in Merge
+
+Git has two ways to accomplish merge: fast-forward merge and 3-way merge.
+
+A fast-forward merge can occur when there is a linear path from the current branch tip to the target branch. Instead of "actually" merging the branches, all Git has to do to integrate the histories is move (i.e., "fast forward") the current branch tip up to the target branch tip. 
+
+However, a fast-forward merge is not possible if the branches have diverged. When there is not a linear path to the target branch, Git has no choice but to combine them via a 3-way merge. 3-way merges use a dedicated commit to tie together the two histories. The nomenclature comes from the fact that Git uses three commits to generate the merge commit: the two branch tips and their common ancestor.
+
+But if two branches both change the same file, Git won't be able to figure out which version to use. This situation requires manual resolve. git status to check the files where conflicts occur, fix up the merges and git add.
+
+When the remote repo is modified before you push, it's suggested you push with the --rebase option. But if the rebase process generates some conflicts, Git will pause at this specific commit and wait for you to resolve it manually. Once the conflict is removed, you can git add and git rebase --continue.
+
+## Advanced Tips
