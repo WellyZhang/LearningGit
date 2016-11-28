@@ -22,7 +22,7 @@ to install under Ubuntu or visit [this](https://git-scm.com/) for a Windows vers
 
 ### Configure Git
 
-The Git global configuration file is stored in ~/.gitconfig while the local repo configuration file resides in <repo>/.git/config. You could either change your configuration in a text editor or use
+The Git global configuration file is stored in ~/.gitconfig while the local repo configuration file resides in \<repo\>/.git/config. You could either change your configuration in a text editor or use
 ```
 git config --global user.name "<YourName>"
 git config --global user.email "<email@example.com>"
@@ -92,7 +92,7 @@ Checking out a commit makes the entire working directory match that commit. This
 ```
 git checkout <commit>/<tag>/HEAD <file> (HEAD is the current commit)
 ```
-will turn <file> into a copy from <commit>/<tag>/HEAD and add it to the staging area. If you leave <file>, the working directory is matched to the specific commit/tag/HEAD. 
+will turn \<file\> into a copy from \<commit\>/\<tag\>/HEAD and add it to the staging area. If you leave \<file\>, the working directory is matched to the specific commit/tag/HEAD. 
 
 Note that checking out old commits is a read-only operation -- nothing you do in here will be saved in your repository. During the normal course of development, the HEAD usually points to master or some other local branch, but when you check out a previous commit, HEAD no longer points to a branch -- it points directly to a commit. This is called a "detached HEAD" state. But checking out an old file does affect the current state of your repository (staged). You can re-commit the old version in a new snapshot as you would any other file.
 
@@ -118,13 +118,12 @@ git revert <commit>
 ```
 generates a new commit that undoes all of the changes introduced in <commit>, then apply it to the current branch. It does not remove the commit from the project history.
 
-Reset "revert"s back to the previous state of a project by removing all subsequent commits. When you undo with git reset(and the commits are no longer referenced by any ref or the reflog), there is no way to retrieve the original copy -- it is a permanent undo.
+Reset "revert"s back to the previous state of a project by removing all subsequent commits. When you undo with git reset (and the commits are no longer referenced by any ref or the reflog), there is no way to retrieve the original copy -- it is a permanent undo.
 
 ```
 git reset [--hard] <file>/<commit> e.g. HEAD^   (the last version)
                                         HEAD^^  (the second to last)
                                         HEAD~10 (the 10th to last)
-                 
 ```
 Without --hard, this command resets the staging area to match the most recent commit, but leaves the working directory unchanged; with it, the working directory is overwritten.
 
