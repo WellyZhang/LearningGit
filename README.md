@@ -352,7 +352,7 @@ git push <remote> <branch>/--all [--force]
 ```
 with the --force option results in push even when non-fast-forward merge.
 
-### Resolvin Conflicts in Merge
+### Resolving Conflicts in Merge
 
 Git has two ways to accomplish merge: fast-forward merge and 3-way merge.
 
